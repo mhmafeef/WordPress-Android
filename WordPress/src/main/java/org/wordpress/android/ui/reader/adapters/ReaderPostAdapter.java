@@ -491,15 +491,14 @@ public class ReaderPostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 holder.mFramePhoto.setVisibility(View.GONE);
                 titleMargin = mMarginLarge;
             } else if (post.getCardType() == ReaderCardType.VIDEO) {
-                ReaderVideoUtils.retrieveVideoThumbnailUrl("abc", new VideoThumbnailUrlListener() {
+                ReaderVideoUtils.retrieveVideoThumbnailUrl(post.getFeaturedVideo(), new VideoThumbnailUrlListener() {
                     @Override public void showThumbnail(String thumbnailUrl) {
                         mImageManager.load(holder.mImgFeatured, thumbnailUrl, null, ScaleType.CENTER_CROP);
                     }
 
                     @Override public void showPlaceholder() {
                         mImageManager.load(holder.mImgFeatured, new ColorDrawable(
-                                        ContextCompat
-                                                .getColor(holder.mImgFeatured.getContext(), R.color.grey_lighten_30)),
+                                        ContextCompat.getColor(holder.mImgFeatured.getContext(), R.color.grey_lighten_30)),
                                 ScaleType.CENTER);
                     }
 
