@@ -110,7 +110,5 @@ class ImageManager @Inject constructor() {
         fun clear(imageView: ImageView) {
             ImageManager().cancelRequestAndClearImageView(imageView)
         }
-
-
     }
 }
