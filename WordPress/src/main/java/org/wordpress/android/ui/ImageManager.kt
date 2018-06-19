@@ -79,7 +79,8 @@ class ImageManager @Inject constructor() {
                 ReplaceWith("imageManager.load(imageView, imgUrl, placeholder, scaleType)",
                         "org.wordpress.android.ui.ImageManager"))
         @JvmOverloads
-        fun loadImage(imageView: ImageView,
+        fun loadImage(
+            imageView: ImageView,
             imgUrl: String,
             @DrawableRes placeholder: Int? = null,
             scaleType: ImageView.ScaleType
