@@ -5,10 +5,8 @@ import android.graphics.drawable.Drawable
 import android.support.annotation.DrawableRes
 import android.widget.ImageView
 import android.widget.ImageView.ScaleType
-import com.bumptech.glide.request.RequestOptions
 import org.wordpress.android.modules.GlideApp
 import org.wordpress.android.modules.GlideRequest
-import org.wordpress.android.util.AppLog
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -27,21 +25,21 @@ class ImageManager @Inject constructor() {
         var request = GlideApp.with(imageView.context)
                 .load(imgUrl)
                 .let { if (placeholder != null) it.fallback(placeholder) else it }
-        request = applyScaleType(request, scaleType)
+        request = applyScaleType(imageView, request, scaleType)
         request.into(imageView)
     }
 
     fun load(imageView: ImageView, bitmap: Bitmap, scaleType: ImageView.ScaleType) {
         var request = GlideApp.with(imageView.context)
                 .load(bitmap)
-        request = applyScaleType(request, scaleType)
+        request = applyScaleType(imageView, request, scaleType)
         request.into(imageView)
     }
 
     fun load(imageView: ImageView, imgUrl: Drawable, scaleType: ImageView.ScaleType) {
         var request = GlideApp.with(imageView.context)
                 .load(imgUrl)
-        request = applyScaleType(request, scaleType)
+        request = applyScaleType(imageView, request, scaleType)
         request.into(imageView)
     }
 
@@ -50,7 +48,7 @@ class ImageManager @Inject constructor() {
         val request = GlideApp.with(imageView.context)
                 .load(imgUrl)
                 .let { if (placeholder != null) it.fallback(placeholder) else it }
-                .apply(RequestOptions().circleCrop())
+                .circleCrop()
         request.into(imageView)
     }
 
@@ -58,17 +56,21 @@ class ImageManager @Inject constructor() {
         GlideApp.with(imageView.context).clear(imageView)
     }
 
-    private fun applyScaleType(request: GlideRequest<Drawable>, scaleType: ScaleType): GlideRequest<Drawable> {
+    private fun applyScaleType(
+        imageView: ImageView,
+        request: GlideRequest<Drawable>,
+        scaleType: ScaleType
+    ): GlideRequest<Drawable> {
         return when (scaleType) {
             ImageView.ScaleType.CENTER_CROP -> request.centerCrop()
             ImageView.ScaleType.CENTER_INSIDE -> request.centerInside()
             ImageView.ScaleType.FIT_CENTER -> request.fitCenter()
-            ImageView.ScaleType.CENTER -> request // default
+            ImageView.ScaleType.CENTER,
             ImageView.ScaleType.FIT_END,
             ImageView.ScaleType.FIT_START,
             ImageView.ScaleType.FIT_XY,
             ImageView.ScaleType.MATRIX -> {
-                AppLog.e(AppLog.T.UTILS, String.format("ScaleType %s is not supported.", scaleType.toString()))
+                imageView.scaleType = scaleType
                 request
             }
         }
