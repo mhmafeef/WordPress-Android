@@ -63,24 +63,10 @@ class ImageManager @Inject constructor() {
             ImageView.ScaleType.CENTER_CROP -> request.centerCrop()
             ImageView.ScaleType.CENTER_INSIDE -> request.centerInside()
             ImageView.ScaleType.FIT_CENTER -> request.fitCenter()
-            ImageView.ScaleType.CENTER -> {
-                return request
-            } // default
-            ImageView.ScaleType.MATRIX -> {
-                AppLog.e(AppLog.T.UTILS, "ScaleType matrix is not supported.")
-                return request
-            }
-            ImageView.ScaleType.FIT_END -> {
-                AppLog.e(AppLog.T.UTILS, "ScaleType fitEnd is not supported.")
-                return request
-            }
-            ImageView.ScaleType.FIT_START -> {
-                AppLog.e(AppLog.T.UTILS, "ScaleType fitStart is not supported.")
-                return request
-            }
-            ImageView.ScaleType.FIT_XY -> {
-                AppLog.e(AppLog.T.UTILS, "ScaleType fitXY is not supported.")
-                return request
+            ImageView.ScaleType.CENTER -> request // default
+            else -> {
+                AppLog.e(AppLog.T.UTILS, String.format("ScaleType %s is not supported.", scaleType.toString()))
+                request
             }
         }
     }
