@@ -64,7 +64,10 @@ class ImageManager @Inject constructor() {
             ImageView.ScaleType.CENTER_INSIDE -> request.centerInside()
             ImageView.ScaleType.FIT_CENTER -> request.fitCenter()
             ImageView.ScaleType.CENTER -> request // default
-            else -> {
+            ImageView.ScaleType.FIT_END,
+            ImageView.ScaleType.FIT_START,
+            ImageView.ScaleType.FIT_XY,
+            ImageView.ScaleType.MATRIX -> {
                 AppLog.e(AppLog.T.UTILS, String.format("ScaleType %s is not supported.", scaleType.toString()))
                 request
             }
