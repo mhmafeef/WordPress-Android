@@ -7,10 +7,13 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 
 import org.wordpress.android.R;
 import org.wordpress.android.datasets.ReaderPostTable;
+import org.wordpress.android.ui.ImageManager;
 import org.wordpress.android.ui.reader.ReaderActivityLauncher;
 import org.wordpress.android.ui.reader.ReaderActivityLauncher.PhotoViewerOption;
 import org.wordpress.android.ui.reader.ReaderConstants;
@@ -19,7 +22,6 @@ import org.wordpress.android.ui.reader.utils.ReaderImageScanner;
 import org.wordpress.android.util.AniUtils;
 import org.wordpress.android.util.DisplayUtils;
 import org.wordpress.android.util.PhotonUtils;
-import org.wordpress.android.widgets.WPNetworkImageView;
 
 import java.util.EnumSet;
 
@@ -88,11 +90,11 @@ public class ReaderThumbnailStrip extends LinearLayout {
         LayoutInflater inflater = LayoutInflater.from(getContext());
         for (final String imageUrl : imageList) {
             View view = inflater.inflate(R.layout.reader_thumbnail_strip_image, mView, false);
-            WPNetworkImageView imageView = (WPNetworkImageView) view.findViewById(R.id.thumbnail_strip_image);
+            ImageView imageView = view.findViewById(R.id.thumbnail_strip_image);
             mView.addView(view);
 
             String photonUrl = PhotonUtils.getPhotonImageUrl(imageUrl, mThumbnailWidth, mThumbnailHeight);
-            imageView.setImageUrl(photonUrl, WPNetworkImageView.ImageType.PHOTO);
+            ImageManager.loadImage(imageView, photonUrl, null, ScaleType.CENTER_CROP);
 
             // tapping a thumbnail opens the photo viewer
             imageView.setOnClickListener(new OnClickListener() {
