@@ -24,24 +24,24 @@ class ImageManager @Inject constructor() {
         @DrawableRes placeholder: Int? = null,
         scaleType: ImageView.ScaleType
     ) {
-        val request = GlideApp.with(imageView.context)
+        var request = GlideApp.with(imageView.context)
                 .load(imgUrl)
                 .let { if (placeholder != null) it.fallback(placeholder) else it }
-        applyScaleType(request, scaleType)
+        request = applyScaleType(request, scaleType)
         request.into(imageView)
     }
 
     fun load(imageView: ImageView, bitmap: Bitmap, scaleType: ImageView.ScaleType) {
-        val request = GlideApp.with(imageView.context)
+        var request = GlideApp.with(imageView.context)
                 .load(bitmap)
-        applyScaleType(request, scaleType)
+        request = applyScaleType(request, scaleType)
         request.into(imageView)
     }
 
     fun load(imageView: ImageView, imgUrl: Drawable, scaleType: ImageView.ScaleType) {
-        val request = GlideApp.with(imageView.context)
+        var request = GlideApp.with(imageView.context)
                 .load(imgUrl)
-        applyScaleType(request, scaleType)
+        request = applyScaleType(request, scaleType)
         request.into(imageView)
     }
 
@@ -58,17 +58,30 @@ class ImageManager @Inject constructor() {
         GlideApp.with(imageView.context).clear(imageView)
     }
 
-    private fun applyScaleType(request: GlideRequest<Drawable>, scaleType: ScaleType) {
-        when (scaleType) {
-            ImageView.ScaleType.CENTER -> {
-            } // default
-            ImageView.ScaleType.MATRIX -> AppLog.e(AppLog.T.UTILS, "ScaleType matrix is not supported.")
+    private fun applyScaleType(request: GlideRequest<Drawable>, scaleType: ScaleType): GlideRequest<Drawable> {
+        return when (scaleType) {
             ImageView.ScaleType.CENTER_CROP -> request.centerCrop()
             ImageView.ScaleType.CENTER_INSIDE -> request.centerInside()
             ImageView.ScaleType.FIT_CENTER -> request.fitCenter()
-            ImageView.ScaleType.FIT_END -> AppLog.e(AppLog.T.UTILS, "ScaleType fitEnd is not supported.")
-            ImageView.ScaleType.FIT_START -> AppLog.e(AppLog.T.UTILS, "ScaleType fitStart is not supported.")
-            ImageView.ScaleType.FIT_XY -> AppLog.e(AppLog.T.UTILS, "ScaleType fitXY is not supported.")
+            ImageView.ScaleType.CENTER -> {
+                return request
+            } // default
+            ImageView.ScaleType.MATRIX -> {
+                AppLog.e(AppLog.T.UTILS, "ScaleType matrix is not supported.")
+                return request
+            }
+            ImageView.ScaleType.FIT_END -> {
+                AppLog.e(AppLog.T.UTILS, "ScaleType fitEnd is not supported.")
+                return request
+            }
+            ImageView.ScaleType.FIT_START -> {
+                AppLog.e(AppLog.T.UTILS, "ScaleType fitStart is not supported.")
+                return request
+            }
+            ImageView.ScaleType.FIT_XY -> {
+                AppLog.e(AppLog.T.UTILS, "ScaleType fitXY is not supported.")
+                return request
+            }
         }
     }
 
